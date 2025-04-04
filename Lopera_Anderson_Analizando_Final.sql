@@ -1,0 +1,371 @@
+
+-- CREACIÓN DE LA BASE DE DATOS
+
+CREATE DATABASE BD_RESTAURANTE;
+USE BD_RESTAURANTE;
+
+-- CREACIÓN DE TABLAS
+
+CREATE TABLE CLIENTES (
+    ID_CLIENTE INT PRIMARY KEY NOT NULL,
+    NOMBRES VARCHAR(45) NOT NULL,
+    APELLIDO1 VARCHAR(45) NOT NULL,
+    APELLIDO2 VARCHAR(45)
+);
+
+CREATE TABLE MESAS (
+    ID_MESA INT PRIMARY KEY NOT NULL,
+    NUM_MAX_COMENSALES INT NOT NULL,
+    UBICACION VARCHAR(45) NOT NULL
+);
+
+CREATE TABLE MESEROS (
+    ID_MESERO INT PRIMARY KEY NOT NULL,
+    NOMBRE VARCHAR(45) NOT NULL,
+    APELLIDO1 VARCHAR(45) NOT NULL,
+    APELLIDO2 VARCHAR(45),
+    MESEROScol VARCHAR(45) NOT NULL
+);
+
+CREATE TABLE CHEFS (
+    ID_CHEFS INT PRIMARY KEY NOT NULL,
+    NOMBRE VARCHAR(45) NOT NULL,
+    APELLIDO1 VARCHAR(45) NOT NULL,
+    APELLIDO2 VARCHAR(45),
+    TELEFONO VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE FACTURAS (
+    NUM_FACTURA INT PRIMARY KEY NOT NULL,
+    ID_MESERO INT NOT NULL,
+    ID_CLIENTE INT NOT NULL,
+    ID_MESA INT NOT NULL,
+    FECHA_FACT DATE NOT NULL,
+    TOTAL DECIMAL(10,2),
+    FOREIGN KEY (ID_MESERO) REFERENCES MESEROS(ID_MESERO),
+    FOREIGN KEY (ID_CLIENTE) REFERENCES CLIENTES(ID_CLIENTE),
+    FOREIGN KEY (ID_MESA) REFERENCES MESAS(ID_MESA)
+);
+
+CREATE TABLE PLATOS (
+    ID_PLATOS INT PRIMARY KEY NOT NULL,
+    NOMBRE_PLATO VARCHAR(45) NOT NULL,
+    INGREDIENTES VARCHAR(45) NOT NULL,
+    PRECIO DECIMAL (10,2),
+    DESCRIPCION VARCHAR(100) NULL,
+    IMAGEN MEDIUMBLOB NULL
+);
+
+CREATE TABLE DETALLE_FACTURA (
+    ID_DETALLE INT PRIMARY KEY NOT NULL,
+    NUM_FACTURA INT NOT NULL,
+    ID_PLATOS INT NOT NULL,
+    CANTIDAD INT NOT NULL,
+    SUBTOTAL DECIMAL(10,2),
+    FOREIGN KEY (NUM_FACTURA) REFERENCES FACTURAS(NUM_FACTURA),
+    FOREIGN KEY (ID_PLATOS) REFERENCES PLATOS(ID_PLATOS)
+);
+
+
+
+-- REGISTROS DE CADA TABLA 
+
+INSERT INTO CLIENTES (ID_CLIENTE, NOMBRES, APELLIDO1, APELLIDO2) VALUES
+(1, 'Juan', 'Perez', 'Gomez'),
+(2, 'Maria', 'Lopez', 'Martinez'),
+(3, 'Carlos', 'Rodriguez', 'Diaz'),
+(4, 'Ana', 'Ramirez', 'Sanchez'),
+(5, 'Luis', 'Hernandez', 'Flores'),
+(6, 'Sofia', 'Garcia', 'Torres'),
+(7, 'Andres', 'Martinez', 'Rojas'),
+(8, 'Valentina', 'Gomez', 'Morales'),
+(9, 'Diego', 'Soto', 'Molina'),
+(10, 'Camila', 'Castro', 'Vargas');
+
+
+INSERT INTO MESAS (ID_MESA, NUM_MAX_COMENSALES, UBICACION) VALUES
+(1, 4, 'Terraza'),
+(2, 6, 'Interior'),
+(3, 4, 'Patio'),
+(4, 8, 'Salón VIP'),
+(5, 2, 'Barra'),
+(6, 4, 'Terraza'),
+(7, 6, 'Interior'),
+(8, 4, 'Patio'),
+(9, 8, 'Salón VIP'),
+(10, 2, 'Barra');
+
+
+INSERT INTO MESEROS (ID_MESERO, NOMBRE, APELLIDO1, APELLIDO2, MESEROScol) VALUES
+(1, 'Pedro', 'Martinez', 'Gomez', 'Turno Mañana'),
+(2, 'Laura', 'Garcia', 'Lopez', 'Turno Tarde'),
+(3, 'Jorge', 'Ramirez', 'Diaz', 'Turno Noche'),
+(4, 'Elena', 'Sanchez', 'Martinez', 'Turno Mañana'),
+(5, 'Ricardo', 'Perez', 'Rojas', 'Turno Tarde'),
+(6, 'Marta', 'Gonzalez', 'Hernandez', 'Turno Noche'),
+(7, 'Esteban', 'Lopez', 'Castro', 'Turno Mañana'),
+(8, 'Carolina', 'Torres', 'Morales', 'Turno Tarde'),
+(9, 'Sebastian', 'Rojas', 'Vargas', 'Turno Noche'),
+(10, 'Daniela', 'Castro', 'Gomez', 'Turno Mañana');
+
+
+INSERT INTO CHEFS (ID_CHEFS, NOMBRE, APELLIDO1, APELLIDO2, TELEFONO) VALUES
+(1, 'Alberto', 'Martinez', 'Soto', '3001234567'),
+(2, 'Beatriz', 'Gomez', 'Torres', '3002345678'),
+(3, 'Fernando', 'Lopez', 'Ramirez', '3003456789'),
+(4, 'Isabel', 'Sanchez', 'Castro', '3004567890'),
+(5, 'Miguel', 'Rodriguez', 'Morales', '3005678901'),
+(6, 'Santiago', 'Perez', 'Vargas', '3006789012'),
+(7, 'Catalina', 'Hernandez', 'Rojas', '3007890123'),
+(8, 'Ricardo', 'Diaz', 'Flores', '3008901234'),
+(9, 'Lorena', 'Castro', 'Martinez', '3009012345'),
+(10, 'Manuel', 'Vargas', 'Gonzalez', '3000123456');
+
+
+INSERT INTO PLATOS (ID_PLATOS, NOMBRE_PLATO, INGREDIENTES, PRECIO, DESCRIPCION, IMAGEN) VALUES
+(1, 'Bandeja Paisa', 'Frijoles, arroz, carne, chicharrón, huevo', 35000.00, 'Plato tradicional colombiano', NULL),
+(2, 'Ajiaco', 'Pollo, papas, maíz, guasca', 30000.00, 'Sopa espesa con pollo y vegetales', NULL),
+(3, 'Sancocho', 'Carne, yuca, plátano, papa', 32000.00, 'Sopa típica de varias carnes', NULL),
+(4, 'Empanadas', 'Maíz, carne, papa', 5000.00, 'Empanadas fritas', NULL),
+(5, 'Arepa Rellena', 'Maíz, queso, carne', 12000.00, 'Arepa con relleno variado', NULL),
+(6, 'Tamales', 'Masa, pollo, vegetales', 15000.00, 'Tamales envueltos en hoja de plátano', NULL),
+(7, 'Ceviche', 'Pescado, limón, cebolla, cilantro', 25000.00, 'Ceviche de pescado fresco', NULL),
+(8, 'Lechona', 'Cerdo, arroz, arvejas', 40000.00, 'Cerdo asado tradicional', NULL),
+(9, 'Posta Negra Cartagenera', 'Carne, salsa, especias', 38000.00, 'Carne en salsa oscura', NULL),
+(10, 'Changua', 'Leche, agua, huevo, cebolla', 10000.00, 'Sopa de desayuno', NULL);
+
+
+INSERT INTO FACTURAS (NUM_FACTURA, ID_MESERO, ID_CLIENTE, ID_MESA, FECHA_FACT, TOTAL) VALUES
+(1, 1, 1, 1, '2025-03-01', 50000.00),
+(2, 2, 2, 2, '2025-03-02', 60000.00),
+(3, 3, 3, 3, '2025-03-03', 45000.00),
+(4, 4, 4, 4, '2025-03-04', 75000.00),
+(5, 5, 5, 5, '2025-03-05', 55000.00),
+(6, 6, 6, 6, '2025-03-06', 65000.00),
+(7, 7, 7, 7, '2025-03-07', 80000.00),
+(8, 8, 8, 8, '2025-03-08', 70000.00),
+(9, 9, 9, 9, '2025-03-09', 48000.00),
+(10, 10, 10, 10, '2025-03-10', 52000.00);
+
+
+INSERT INTO DETALLE_FACTURA (ID_DETALLE, NUM_FACTURA, ID_PLATOS, CANTIDAD, SUBTOTAL) VALUES
+(1, 1, 1, 2, 70000.00),    
+(2, 2, 2, 1, 30000.00),    
+(3, 3, 3, 1, 32000.00),     
+(4, 4, 4, 3, 15000.00),    
+(5, 5, 5, 2, 24000.00),   
+(6, 6, 6, 2, 30000.00),     
+(7, 7, 7, 2, 50000.00),    
+(8, 8, 8, 2, 80000.00),     
+(9, 9, 9, 1, 38000.00),      
+(10, 10, 10, 2, 20000.00);   
+
+
+-- ÍNDICES
+
+CREATE INDEX idx_mesas_ubicacion ON MESAS(UBICACION);
+
+CREATE INDEX idx_platos_nombre ON PLATOS(NOMBRE_PLATO);
+
+CREATE INDEX idx_facturas_cliente ON FACTURAS(ID_CLIENTE);
+
+CREATE INDEX idx_facturas_mesa ON FACTURAS(ID_MESA); 
+
+CREATE INDEX idx_detalle_factura_factura ON DETALLE_FACTURA(NUM_FACTURA);
+
+-- Tabla CLIENTES
+INSERT INTO CLIENTES (ID_CLIENTE, NOMBRES, APELLIDO1, APELLIDO2)
+VALUES (11, 'Andrés', 'Gómez', 'Sánchez');
+
+SELECT * FROM CLIENTES;
+
+UPDATE CLIENTES
+SET NOMBRES = 'Luis Andrés'
+WHERE ID_CLIENTE = 11;
+
+DELETE FROM CLIENTES
+WHERE ID_CLIENTE = 11;
+
+-- Tabla MESAS
+INSERT INTO MESAS (ID_MESA, NUM_MAX_COMENSALES, UBICACION)
+VALUES (11, 5, 'Jardín');
+
+SELECT * FROM MESAS
+WHERE UBICACION = 'Jardín';
+
+UPDATE MESAS
+SET NUM_MAX_COMENSALES = 6
+WHERE ID_MESA = 11;
+
+DELETE FROM MESAS
+WHERE ID_MESA = 11;
+
+-- Tabla MESEROS
+INSERT INTO MESEROS (ID_MESERO, NOMBRE, APELLIDO1, APELLIDO2, MESEROScol)
+VALUES (11, 'Luis', 'Martínez', 'Pérez', 'Turno Tarde');
+
+SELECT * FROM MESEROS
+WHERE MESEROScol = 'Turno Tarde';
+
+UPDATE MESEROS
+SET MESEROScol = 'Turno Noche'
+WHERE ID_MESERO = 11;
+
+DELETE FROM MESEROS
+WHERE ID_MESERO = 11;
+
+-- Tabla CHEFS
+INSERT INTO CHEFS (ID_CHEFS, NOMBRE, APELLIDO1, APELLIDO2, TELEFONO)
+VALUES (11, 'Carolina', 'Ramírez', 'López', '3001112223');
+
+SELECT * FROM CHEFS
+WHERE TELEFONO = '3001112223';
+
+UPDATE CHEFS
+SET TELEFONO = '3009998887'
+WHERE ID_CHEFS = 11;
+
+DELETE FROM CHEFS
+WHERE ID_CHEFS = 11;
+
+-- Tabla FACTURAS
+INSERT INTO FACTURAS (NUM_FACTURA, ID_MESERO, ID_CLIENTE, ID_MESA, FECHA_FACT, TOTAL)
+VALUES (11, 2, 2, 2, '2025-03-11', 65000.00);
+
+SELECT * FROM FACTURAS
+WHERE FECHA_FACT = '2025-03-11';
+
+UPDATE FACTURAS
+SET TOTAL = 70000.00
+WHERE NUM_FACTURA = 11;
+
+DELETE FROM FACTURAS
+WHERE NUM_FACTURA = 11;
+
+-- Tabla PLATOS
+INSERT INTO PLATOS (ID_PLATOS, NOMBRE_PLATO, INGREDIENTES, PRECIO, DESCRIPCION, IMAGEN)
+VALUES (11, 'Ensalada Mixta', 'Lechuga, tomate, zanahoria', 15000.00, 'Ensalada fresca con ingredientes variados', NULL);
+
+SELECT * FROM PLATOS
+WHERE NOMBRE_PLATO = 'Ensalada Mixta';
+
+UPDATE PLATOS
+SET PRECIO = 16000.00
+WHERE ID_PLATOS = 11;
+
+DELETE FROM PLATOS
+WHERE ID_PLATOS = 11;
+
+-- Tabla DETALLE_FACTURA
+INSERT INTO DETALLE_FACTURA (ID_DETALLE, NUM_FACTURA, ID_PLATOS, CANTIDAD, SUBTOTAL)
+VALUES (11, 1, 2, 3, 90000.00);
+
+SELECT * FROM DETALLE_FACTURA
+WHERE NUM_FACTURA = 1;
+
+UPDATE DETALLE_FACTURA
+SET CANTIDAD = 4, SUBTOTAL = 120000.00
+WHERE ID_DETALLE = 11;
+
+DELETE FROM DETALLE_FACTURA
+WHERE ID_DETALLE = 11;
+
+
+
+-- VISTAS
+
+CREATE VIEW Facturas_Clientes_Meseros AS
+SELECT
+    F.NUM_FACTURA,
+    F.FECHA_FACT,
+    F.TOTAL,
+    C.NOMBRES AS Cliente_Nombre,
+    C.APELLIDO1 AS Cliente_Apellido1,
+    M.NOMBRE AS Mesero_Nombre,
+    M.APELLIDO1 AS Mesero_Apellido1
+FROM FACTURAS F
+INNER JOIN CLIENTES C ON F.ID_CLIENTE = C.ID_CLIENTE
+INNER JOIN MESEROS M ON F.ID_MESERO = M.ID_MESERO;
+
+
+CREATE VIEW Detalle_Factura_Platos AS
+SELECT
+    DF.NUM_FACTURA,
+    P.NOMBRE_PLATO,
+    DF.CANTIDAD,
+    DF.SUBTOTAL
+FROM DETALLE_FACTURA DF
+INNER JOIN PLATOS P ON DF.ID_PLATOS = P.ID_PLATOS;
+
+
+CREATE VIEW Mesas_Facturas AS
+SELECT
+    M.UBICACION,
+    F.NUM_FACTURA,
+    F.FECHA_FACT,
+    F.TOTAL
+FROM MESAS M
+LEFT JOIN FACTURAS F ON M.ID_MESA = F.ID_MESA;
+
+
+CREATE VIEW Clientes_Facturas AS
+SELECT
+    C.NOMBRES,
+    C.APELLIDO1,
+    F.NUM_FACTURA,
+    F.FECHA_FACT,
+    F.TOTAL
+FROM CLIENTES C
+LEFT JOIN FACTURAS F ON C.ID_CLIENTE = F.ID_CLIENTE;
+
+
+CREATE VIEW Facturas_Detalles AS
+SELECT
+    F.NUM_FACTURA,
+    F.FECHA_FACT,
+    F.TOTAL,
+    DF.ID_PLATOS,
+    DF.CANTIDAD,
+    DF.SUBTOTAL
+FROM FACTURAS F
+INNER JOIN DETALLE_FACTURA DF ON F.NUM_FACTURA = DF.NUM_FACTURA;
+
+
+CREATE VIEW Meseros_Facturas AS
+SELECT
+    M.NOMBRE,
+    M.APELLIDO1,
+    F.NUM_FACTURA,
+    F.FECHA_FACT,
+    F.TOTAL
+FROM MESEROS M
+LEFT JOIN FACTURAS F ON M.ID_MESERO = F.ID_MESERO;
+
+
+CREATE VIEW Platos_Detalle_Factura AS
+SELECT
+    P.NOMBRE_PLATO,
+    DF.NUM_FACTURA,
+    DF.CANTIDAD,
+    DF.SUBTOTAL
+FROM PLATOS P
+RIGHT JOIN DETALLE_FACTURA DF ON P.ID_PLATOS = DF.ID_PLATOS;
+
+
+CREATE VIEW Facturas_Completa AS
+SELECT
+    F.NUM_FACTURA,
+    F.FECHA_FACT,
+    F.TOTAL,
+    C.NOMBRES AS Cliente_Nombre,
+    C.APELLIDO1 AS Cliente_Apellido1,
+    M.NOMBRE AS Mesero_Nombre,
+    M.APELLIDO1 AS Mesero_Apellido1,
+    MS.UBICACION AS Mesa_Ubicacion
+FROM FACTURAS F
+INNER JOIN CLIENTES C ON F.ID_CLIENTE = C.ID_CLIENTE
+INNER JOIN MESEROS M ON F.ID_MESERO = M.ID_MESERO
+INNER JOIN MESAS MS ON F.ID_MESA = MS.ID_MESA;
+
+SELECT * FROM clientes_facturas;
+
